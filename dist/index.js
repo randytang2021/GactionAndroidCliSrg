@@ -59329,22 +59329,14 @@ async function setupAndroidCmdlineTools(version, acceptLicenses) {
     else {
         extractedPath = await tc.extractZip(downloadedPath);
     }
-    // The zip extracts to a folder named `cmdline-tools`.
-    // To use `sdkmanager`, it expects to be located at `<sdk_root>/cmdline-tools/latest/bin/sdkmanager`.
-    // So we need to create the proper directory structure.
     const sdkRoot = path.join(extractedPath, 'android-sdk');
     const cmdlineToolsDir = path.join(sdkRoot, 'cmdline-tools');
     const latestDir = path.join(cmdlineToolsDir, 'latest');
-    await io.mkdirP(latestDir);
-    // Move contents of extracted cmdline-tools into latestDir
-    const originalCmdlineToolsDir = path.join(extractedPath, 'cmdline-tools');
-    // To avoid recursive move issue, we move items individually or use a temp dir.
-    // Using io.mv to move items from originalCmdlineToolsDir to latestDir
-    // io.mv might not merge directories correctly, let's just mv the whole thing to 'latest' inside a temp dir first.
-    const tempCmdlineToolsDir = path.join(extractedPath, 'temp-cmdline-tools');
-    await io.mv(originalCmdlineToolsDir, tempCmdlineToolsDir);
     await io.mkdirP(cmdlineToolsDir);
-    await io.mv(tempCmdlineToolsDir, latestDir);
+    // The zip extracts to a folder named `cmdline-tools`.
+    // We move it to `<sdkRoot>/cmdline-tools/latest`
+    const originalCmdlineToolsDir = path.join(extractedPath, 'cmdline-tools');
+    await io.mv(originalCmdlineToolsDir, latestDir);
     core.info(`Android SDK Root configured at: ${sdkRoot}`);
     // Export ANDROID_HOME and ANDROID_SDK_ROOT
     core.exportVariable('ANDROID_HOME', sdkRoot);
