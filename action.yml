@@ -1,0 +1,20 @@
+name: 'Setup Android Command Line Tools'
+description: 'Downloads and sets up the Android SDK Command Line Tools'
+author: 'Randy Tang'
+branding:
+  icon: 'download'
+  color: 'green'
+
+inputs:
+  cmdline-tools-version:
+    description: 'Version of the command line tools to install (e.g., "11076708"). Defaults to "11076708"'
+    required: false
+    default: '11076708'
+  accept-licenses:
+    description: 'Whether to automatically accept all Android SDK licenses. Defaults to "true"'
+    required: false
+    default: 'true'
+
+runs:
+  using: 'node20'
+  main: 'dist/index.js'
