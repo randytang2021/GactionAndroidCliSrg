@@ -58,8 +58,10 @@ export async function setupAndroidCmdlineTools(version: string, acceptLicenses: 
 
   if (acceptLicenses) {
     core.info('Accepting Android SDK licenses...');
-    const sdkmanagerPath = path.join(binPath, 'sdkmanager');
-    await exec.exec('bash', ['-c', `yes | "${sdkmanagerPath}" --licenses`]);
+    const sdkmanager = osPlat === 'win32' ? 'sdkmanager.bat' : 'sdkmanager';
+    const sdkmanagerPath = path.join(binPath, sdkmanager);
+    const input = Buffer.from(Array(100).fill('y').join('\n') + '\n');
+    await exec.exec(sdkmanagerPath, ['--licenses'], { input });
     core.info('Android SDK licenses accepted.');
   }
 
