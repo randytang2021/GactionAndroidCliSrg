@@ -15,6 +15,7 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Check if dist/ is up to date
+        shell: bash
         run: |
           npm install
           npm run build
