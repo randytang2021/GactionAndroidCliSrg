@@ -1,5 +1,5 @@
 import * as core from '@actions/core';
-import { setupAndroidCmdlineTools } from './setup.js';
+import { setupAndroidCmdlineTools } from './setup';
 
 async function run() {
   try {
