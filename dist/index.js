@@ -59355,8 +59355,8 @@ async function setupAndroidCmdlineTools(version, acceptLicenses) {
     core.info(`Added to PATH: ${binPath}`);
     if (acceptLicenses) {
         core.info('Accepting Android SDK licenses...');
-        const yesCmd = osPlat === 'win32' ? 'cmd /c "echo y"' : 'yes';
-        await exec.exec('bash', ['-c', `yes | sdkmanager --licenses`]);
+        const sdkmanagerPath = path.join(binPath, 'sdkmanager');
+        await exec.exec('bash', ['-c', `yes | "${sdkmanagerPath}" --licenses`]);
         core.info('Android SDK licenses accepted.');
     }
     return sdkRoot;
