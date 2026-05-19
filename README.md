@@ -39,5 +39,9 @@ steps:
 
 1. Install dependencies: `npm install`
 2. Make your changes in the `src/` directory.
-3. Build the action: `npx ncc build src/index.ts -o dist --license licenses.txt`
+3. Build the action: `npm run build`
 4. Commit the changes, including the `dist/` directory.
+
+## Example Usage
+
+See the [TestGactionAndroidCliSrg](https://github.com/randytang2021/TestGactionAndroidCliSrg) repository for a live example of this action in use.

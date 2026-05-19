@@ -59238,8 +59238,17 @@ async function run() {
         const version = core.getInput('cmdline-tools-version') || '11076708';
         const acceptLicensesStr = core.getInput('accept-licenses') || 'true';
         const acceptLicenses = acceptLicensesStr.toLowerCase() === 'true';
-        await (0, setup_1.setupAndroidCmdlineTools)(version, acceptLicenses);
+        const sdkRoot = await (0, setup_1.setupAndroidCmdlineTools)(version, acceptLicenses);
         core.info('Android Command Line Tools setup successfully.');
+        await core.summary
+            .addHeading('Android CLI Setup Completed 🚀')
+            .addTable([
+            [{ data: 'Component', header: true }, { data: 'Details', header: true }],
+            ['SDK Root Path', sdkRoot],
+            ['Tools Version', version],
+            ['Licenses Accepted', acceptLicenses ? 'Yes' : 'No']
+        ])
+            .write();
     }
     catch (error) {
         if (error instanceof Error) {
@@ -59318,11 +59327,14 @@ async function setupAndroidCmdlineTools(version, acceptLicenses) {
         throw new Error(`Unsupported platform: ${osPlat}`);
     }
     const downloadUrl = `https://dl.google.com/android/repository/commandlinetools-${platform}-${version}_latest.zip`;
-    core.info(`Downloading Android command line tools from ${downloadUrl}`);
+    core.info(`Downloading Android command line tools from: ${downloadUrl}`);
     // Download the archive
+    core.debug('Starting download via tool-cache...');
     const downloadedPath = await tc.downloadTool(downloadUrl);
+    core.debug(`Download complete. File saved to: ${downloadedPath}`);
     // Extract the archive
     let extractedPath = '';
+    core.info('Extracting the downloaded ZIP archive...');
     if (osPlat === 'win32') {
         extractedPath = await tc.extractZip(downloadedPath);
     }

@@ -14,6 +14,16 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Check if dist/ is up to date
+        run: |
+          npm install
+          npm run build
+          if [ -n "$(git status --porcelain dist/)" ]; then
+            echo "dist/ is out of sync. Please run 'npm run build' and commit the changes."
+            git diff
+            exit 1
+          fi
+
       - name: Test Setup Android CLI
         uses: ./
         with:

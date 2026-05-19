@@ -7,9 +7,19 @@ async function run() {
     const acceptLicensesStr = core.getInput('accept-licenses') || 'true';
     const acceptLicenses = acceptLicensesStr.toLowerCase() === 'true';
 
-    await setupAndroidCmdlineTools(version, acceptLicenses);
+    const sdkRoot = await setupAndroidCmdlineTools(version, acceptLicenses);
 
     core.info('Android Command Line Tools setup successfully.');
+
+    await core.summary
+      .addHeading('Android CLI Setup Completed 🚀')
+      .addTable([
+        [{data: 'Component', header: true}, {data: 'Details', header: true}],
+        ['SDK Root Path', sdkRoot],
+        ['Tools Version', version],
+        ['Licenses Accepted', acceptLicenses ? 'Yes' : 'No']
+      ])
+      .write();
   } catch (error) {
     if (error instanceof Error) {
       core.setFailed(error.message);

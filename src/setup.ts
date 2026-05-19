@@ -21,13 +21,16 @@ export async function setupAndroidCmdlineTools(version: string, acceptLicenses: 
   }
 
   const downloadUrl = `https://dl.google.com/android/repository/commandlinetools-${platform}-${version}_latest.zip`;
-  core.info(`Downloading Android command line tools from ${downloadUrl}`);
+  core.info(`Downloading Android command line tools from: ${downloadUrl}`);
 
   // Download the archive
+  core.debug('Starting download via tool-cache...');
   const downloadedPath = await tc.downloadTool(downloadUrl);
+  core.debug(`Download complete. File saved to: ${downloadedPath}`);
   
   // Extract the archive
   let extractedPath = '';
+  core.info('Extracting the downloaded ZIP archive...');
   if (osPlat === 'win32') {
     extractedPath = await tc.extractZip(downloadedPath);
   } else {
